@@ -42,7 +42,7 @@ int main()
             else
             {
                 chk=false;
-                gg=i;
+                rec_id=i;
                 break;
             }
         }

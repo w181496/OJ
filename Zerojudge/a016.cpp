@@ -1,96 +1,40 @@
 #include <iostream>
-
 using namespace std;
-
-int main()
-{
-    int n[9][9];
-    while(cin>>n[0][0]>>n[0][1]>>n[0][2]>>n[0][3]>>n[0][4]>>n[0][5]>>n[0][6]>>n[0][7]>>n[0][8])
-    {
-        bool c=1;
-        for(int i=1; i<9; ++i)
-        {
-            for(int j=0; j<9; ++j)
-            {
-                cin>>n[i][j];
+int main(){
+    ios_base::sync_with_stdio(0);
+    int arr[9][9];
+    int check[3][10]; // 0: 列 1: 行 2: 3x3
+    bool flag;
+    while(cin >> arr[0][0]) {
+        for(int i = 0; i < 9; ++i)
+            for(int j = 0; j < 9; ++j) {
+                if(i == 0 && j == 0) continue;
+                cin >> arr[j][i];
+            }
+        flag = true;
+        // 檢查列+行
+        for(int i = 0; i < 9 && flag; ++i) {
+            for(int j = 0; j < 10; ++j) check[0][j] = check[1][j] = 0; // check清空
+            for(int j = 0; j < 9 && flag; ++j) {
+                if(check[0][arr[j][i]]) flag = false;
+                check[0][arr[j][i]] = 1;
+                if(check[1][arr[i][j]]) flag = false;
+                check[1][arr[i][j]] = 1;
             }
         }
-        for(int i=0; i<9; ++i)
-        {
-            bool r[10]= {1,1,1,1,1,1,1,1,1,1};
-            for(int j=0; j<9; ++j)
-            {
-                if(r[n[i][j]])
-                {
-                    r[n[i][j]]=0;
-                }
-                else
-                {
-                    c=0;
-                }
+        // 檢查3x3
+        for(int i = 0; i < 9 && flag; i += 3) {
+            for(int j = 0; j < 9 && flag; j += 3) {
+                for(int k = 0; k < 10; ++k) check[2][k] = 0; // check清空
+                for(int a = 0; a < 3 && flag; ++a)
+                    for(int b = 0; b < 3 && flag; ++b) {
+                        if(check[2][arr[j + b][i + a]]) flag = false;
+                        check[2][arr[j + b][i + a]] = 1;
+                    }
             }
         }
-        for(int i=0; i<9; ++i)
-        {
-            bool r[10]= {1,1,1,1,1,1,1,1,1,1};
-            for(int j=0; j<9; ++j)
-            {
-                if(r[n[j][i]])
-                {
-                    r[n[j][i]]=0;
-                }
-                else
-                {
-                    c=0;
-                }
-            }
-        }
-        for(int i=0; i<=6; i+=3)
-        {
-            for(int j=0; j<=6; j+=3)
-            {
-                bool r[10]= {1,1,1,1,1,1,1,1,1,1};
-                if(r[n[i][j]])
-                    r[n[i][j]]=0;
-                else
-                    c=0;
-                if(r[n[i][j+1]])
-                    r[n[i][j+1]]=0;
-                else
-                    c=0;
-                if(r[n[i][j+2]])
-                    r[n[i][j+2]]=0;
-                else
-                    c=0;
-                if(r[n[i+1][j]])
-                    r[n[i+1][j]]=0;
-                else
-                    c=0;
-                if(r[n[i+1][j+1]])
-                    r[n[i+1][j+1]]=0;
-                else
-                    c=0;
-                if(r[n[i+1][j+2]])
-                    r[n[i+1][j+2]]=0;
-                else
-                    c=0;
-                if(r[n[i+2][j]])
-                    r[n[i+2][j]]=0;
-                else
-                    c=0;
-                if(r[n[i+2][j+1]])
-                    r[n[i+2][j+1]]=0;
-                else
-                    c=0;
-                if(r[n[i+2][j+2]])
-                    r[n[i+2][j+2]]=0;
-                else
-                    c=0;
-            }
-        }
-
-        if(c)cout<<"yes"<<endl;
-        else cout<<"no"<<endl;
+        if(flag) cout << "yes" << endl;
+        else cout << "no" << endl;
     }
     return 0;
 }
